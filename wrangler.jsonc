@@ -10,5 +10,12 @@
       "0 9 * * *",
       "0 15 * * *"
     ]
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "context-video-db",
+      "database_id": "15851db6-7a91-4246-8e8b-b9e4098578b2"
+    }
+  ]
 }
