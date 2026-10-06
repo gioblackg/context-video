@@ -8,7 +8,7 @@ async function getApiBase() {
 async function fetchRecommendations(mode = 'home', limit = 60) {
   const apiBase = await getApiBase();
   const url = `${apiBase}/api/recommendations/current?mode=${encodeURIComponent(mode)}&limit=${encodeURIComponent(limit)}`;
-  const res = await fetch(url, { cache: 'no-store' });
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`CONTEXT API ${res.status}`);
   return res.json();
 }
