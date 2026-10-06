@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "CONTEXT Video Beta",
+  "version": "0.1.0",
+  "description": "YouTube 시청기록 없이 CONTEXT Video 추천을 홈과 Shorts에서 보여주는 베타 확장프로그램",
+  "permissions": ["storage"],
+  "host_permissions": ["https://*.workers.dev/*"],
+  "background": {"service_worker": "background.js", "type": "module"},
+  "content_scripts": [{
+    "matches": ["https://www.youtube.com/*"],
+    "js": ["content.js"],
+    "css": ["styles.css"],
+    "run_at": "document_idle"
+  }],
+  "options_page": "options.html",
+  "action": {"default_title": "CONTEXT Video Beta"}
+}
