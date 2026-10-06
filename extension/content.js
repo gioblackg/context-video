@@ -5,6 +5,7 @@ let homeCursor = 0;
 let shortsQueue = [];
 let shortsCursor = 0;
 let lastPath = location.pathname + location.search;
+let homeRenderTimer = null;
 
 function message(payload) {
   return new Promise(resolve => chrome.runtime.sendMessage(payload, resolve));
@@ -140,7 +141,10 @@ async function routeChanged() {
     return;
   }
   lastPath = path;
-  if (location.pathname === '/') setTimeout(() => renderHome(false), 600);
+  if (location.pathname === '/') {
+    clearTimeout(homeRenderTimer);
+    homeRenderTimer = setTimeout(() => renderHome(false), 350);
+  }
   else document.getElementById(ROOT_ID)?.remove();
   await ensureShortsButton();
 }
