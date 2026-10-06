@@ -38,12 +38,14 @@ async function buildMode(env, hourKey, mode, limit) {
 
   if (!results.length) return 0;
 
-  const batch = results.map((row, idx) => env.DB.prepare(`
+  const statements = results.map((row, idx) => env.DB.prepare(`
     INSERT OR REPLACE INTO recommendation_items(hour_key, mode, position, video_id, generated_at)
     VALUES(?,?,?,?,CURRENT_TIMESTAMP)
   `).bind(hourKey, mode, idx + 1, row.video_id));
 
-  await env.DB.batch(batch);
+  for (let i = 0; i < statements.length; i += 50) {
+    await env.DB.batch(statements.slice(i, i + 50));
+  }
   return results.length;
 }
 
@@ -70,7 +72,7 @@ export async function ensureHourlyRecommendations(env, force = false) {
 
   await env.DB.prepare(`
     DELETE FROM recommendation_items
-    WHERE hour_key < datetime('now','-48 hours')
+    WHERE generated_at < datetime('now','-48 hours')
   `).run();
 
   return { hour_key: hourKey, created: true, home, shorts };
